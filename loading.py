@@ -2,6 +2,19 @@ from openpyxl import load_workbook
 from openpyxl.utils.cell import coordinate_from_string, column_index_from_string, get_column_letter
 import pandas as pd
 
+DATES_ROW = '7'
+
+location_dict = {
+    'P': 'Peščenica',
+    'M': 'Špansko',
+    'T': 'Trešnjevka',
+    'J': 'Trešnjevka',
+    'D': 'Dubrava',
+    'Š': 'Špansko',
+}
+
+DATES_ROW = '7'
+
 def translate_school(school:  str) -> str:
     '''
     Translate school name to a standardized format
@@ -89,39 +102,104 @@ def load_volunteers(sheet: object, location_name: str, school_name: str, class_t
     - volunteer_name
     - volunteer_dates
     - volunteer_class
-    - location_name
     - volunteer_school
     '''
     
-    
+    # Initialize a dictionary to store the volunteers and to later turn it into a DataFrame
     volunteers_dict = {
         'volunteer_name': [],
         'volunteer_dates': [],
         'volunteer_class': [],
-        'location_name': [],
         'volunteer_school': []
     }
     
-    class_name = class_tuple[0]
-    class_range = class_tuple[1]
+    # Get the class name and the start of the class range
+    class_name, class_start = class_tuple
     
-    column, start_row = coordinate_from_string(class_range)
+    # Get the column and row of the cell where the class starts
+    column, start_row = coordinate_from_string(class_start)
     start_row = int(start_row)
     
+    # Get the column letter of the first column, two columns to the right of the class column
     column = get_column_letter(column_index_from_string(column)+2)
     
+    # Iterate through the rows from the start of the class to the start of the next class
     for row in range(start_row, next_class_start_row):
         
+        # Get the volunteer name
         volunteer_name = sheet[column+str(row)].value
         
+        # Get the dates where the volunteer had done some work
         matching_cells = [sheet[get_column_letter(cell.column)+DATES_ROW] for cell in sheet[row] if cell.value == 'da']
-        matching_cells = [cell.value for cell in matching_cells if cell.value != None]
+        dates = [cell.value for cell in matching_cells if cell.value != None]
+        hours = [(location_name, date) for date in dates]
         
         if volunteer_name != None:
+            
+            # Remove the * character from the volunteer name
+            volunteer_name = volunteer_name.replace('*', '')
+            
             volunteers_dict['volunteer_name'].append(volunteer_name)
-            volunteers_dict['volunteer_dates'].append(matching_cells)
+            volunteers_dict['volunteer_dates'].append(hours)
             volunteers_dict['volunteer_class'].append(class_name)
             volunteers_dict['volunteer_school'].append(school_name)
-            volunteers_dict['location_name'].append(location_name)
         
     return pd.DataFrame(volunteers_dict)
+
+def load_location(wb, location_sheet_name: str) -> pd.DataFrame:
+    '''
+    Will load all volunteers from a passed location sheet.
+    
+    Returns a DataFrame with the following columns:
+    - volunteer_name
+    - volunteer_dates
+    - volunteer_class
+    - volunteer_school
+    '''
+    
+    # Load the worksheet and the location name
+    sheet = wb[location_sheet_name]
+    location_name = location_dict[location_sheet_name]
+    
+    # Dictionary to store the volunteers for this location and turns it into a DataFrame
+    this_location_dict = {
+        'volunteer_name': [],
+        'volunteer_dates': [],
+        'volunteer_class': [],
+        'volunteer_school': []
+    }
+    volunteer_df = pd.DataFrame(this_location_dict)
+    
+    # Load all schools and classes for this location
+    schools = load_all_schools(sheet)
+    
+    # Iterate through all schools
+    for school_tuple in schools:
+        
+        school_name, school_range = school_tuple
+        
+        # Get the row number of the next school, or set it to the last row of the sheet if it is the last school
+        if schools.index((school_name, school_range)) == len(schools)-1:
+            next_school_start_row = sheet.max_row+1
+        else:
+            next_school_start_row = int(coordinate_from_string(schools[schools.index((school_name, school_range))+1][1][0])[1])
+        
+        # Load all classes for this school
+        classes = load_classes(sheet, school_tuple, next_school_start_row)
+        
+        # Iterate through all classes
+        for class_tuple in classes:
+            
+            # Get the row number of the next class, or set it to the last row of the sheet if it is the last class
+            if classes.index(class_tuple) == len(classes)-1:
+                next_class_start_row = next_school_start_row
+            else:
+                next_class_start_row = int(classes[classes.index(class_tuple)+1][1][1:])
+                
+            # Load all volunteers for this class
+            class_volunteer_df = load_volunteers(sheet, location_name, school_name, class_tuple, next_class_start_row)
+            
+            # Concatenate the class volunteers to the location volunteers
+            volunteer_df = pd.concat([volunteer_df, class_volunteer_df], ignore_index=True)
+            
+    return volunteer_df
