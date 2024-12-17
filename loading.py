@@ -203,3 +203,33 @@ def load_location(wb, location_sheet_name: str) -> pd.DataFrame:
             volunteer_df = pd.concat([volunteer_df, class_volunteer_df], ignore_index=True)
             
     return volunteer_df
+
+def load_year(file_path: str) -> object:
+    '''
+    Load the workbook, data_only=True to get the values of the formulas not the formulas themselves.
+    '''
+    
+    # Load the workbook, data_only=True to get the values of the formulas not the formulas themselves
+    wb = load_workbook(file_path, data_only=True)
+    sheets = wb.sheetnames
+    
+    locations = []
+    
+    # Load all locations
+    for sheet in sheets[1:]:
+    
+        location_df = load_location(wb, sheet)
+        locations.append(location_df)
+        
+    
+    year_df = pd.concat(locations, ignore_index=True)
+
+    year_df = (
+        year_df.groupby("volunteer_name", as_index=False)
+        .agg({
+            "volunteer_dates": lambda x: sum(x, []),  # Merge lists in 'volunteer_dates'
+            **{col: "first" for col in year_df.columns if col not in ["volunteer_name", "volunteer_dates"]}  # Keep the first occurrence of other columns
+        })
+    )
+
+    return year_df
