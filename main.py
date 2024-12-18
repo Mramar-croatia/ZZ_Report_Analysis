@@ -1,18 +1,22 @@
 from openpyxl import load_workbook
 from openpyxl.utils.cell import coordinate_from_string, column_index_from_string, get_column_letter
 import pandas as pd
+import datetime
 
+from filtering import *
 from loading import *
 
-if __name__ == '__main__':
-    
-    # Load the workbook, data_only=True to get the values of the formulas not the formulas themselves
-    wb = load_workbook('SAMPLES\zz_lista_volontera_24_25.xlsx', data_only=True)
+PATH = 'SAMPLES\zz_lista_volontera_23_24.xlsx'
 
-    sheets = wb.sheetnames
+if __name__ == '__main__': 
+
+    year_df = load_year(PATH)
+    year_df = remove_non_wanted_dates(year_df)
     
-    location_sheet = wb[sheets[1]]
+    year_df = year_df.sort_values(by='volunteer_dates', key=lambda x: x.apply(len), ascending=False)
+    year_df = year_df.reset_index(drop=True)
     
-    location_df = load_location(wb, sheets[1])
+    year_df['volounteer_count'] = year_df['volunteer_dates'].apply(len)
     
-    print(location_df)
+    # print(year_df['volounteer_count'].sum())
+    print(year_df.head(15))

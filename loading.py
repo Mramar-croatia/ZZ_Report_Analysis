@@ -1,6 +1,7 @@
 from openpyxl import load_workbook
 from openpyxl.utils.cell import coordinate_from_string, column_index_from_string, get_column_letter
 import pandas as pd
+from datetime import datetime
 
 DATES_ROW = '7'
 
@@ -14,6 +15,29 @@ location_dict = {
 }
 
 DATES_ROW = '7'
+
+def parse_date(date):
+    """
+    Parse a date from either a string or a datetime object and return a consistent format (DD.MM.YYYY).
+    Handles multiple potential string formats and gracefully falls back for invalid dates.
+    """
+    if isinstance(date, str):
+        # Try multiple common date formats
+        date_formats = ["%d.%m.%Y", "%d.%m.%y", "%Y-%m-%d", "%d/%m/%Y"]
+        for fmt in date_formats:
+            try:
+                return datetime.strptime(date, fmt).strftime("%d.%m.%Y.")  # Standardize to DD.MM.YYYY
+            except ValueError:
+                continue
+        date = date  # Return the original string if parsing fails for all formats
+    
+    elif isinstance(date, datetime):
+        date =  date.strftime("%d.%m.%Y.")  # Convert datetime to DD.MM.YYYY
+    
+    if date[-4] == '.':
+        date = date[:-2] + '02' + date[-2:]  # Remove trailing dot if present
+    
+    return date  # Return as-is if neither string nor datetime
 
 def translate_school(school:  str) -> str:
     '''
@@ -131,9 +155,10 @@ def load_volunteers(sheet: object, location_name: str, school_name: str, class_t
         
         # Get the dates where the volunteer had done some work
         matching_cells = [sheet[get_column_letter(cell.column)+DATES_ROW] for cell in sheet[row] if cell.value == 'da']
-        dates = [cell.value for cell in matching_cells if cell.value != None]
-        hours = [(location_name, date) for date in dates]
+        dates = [parse_date(cell.value) for cell in matching_cells if cell.value is not None]
         
+        hours = [(location_name, date) for date in dates]
+                
         if volunteer_name != None:
             
             # Remove the * character from the volunteer name
