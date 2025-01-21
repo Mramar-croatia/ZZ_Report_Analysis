@@ -1,0 +1,38 @@
+24_25 broj prijavljenih: 176
+23_24 broj prijavljenih: 127
+22_23 broj prijavljenih: 98
+
+24_25 sati: 350
+23_24 sati: 255
+22_23 sati: 212
+
+BROJ SATI PO SKOLI (2024./2025.)
+Škola  Broj sati
+XV.       232
+GLV       54
+PŠVP      43
+KG        12
+III.      5
+V.        4
+GTB       0
+IV.       0
+VIII.     0
+
+24_25 postotak mioc sati: 66.29 %
+23_24 postotak mioc sati: 77.25 %
+22_23 postotak mioc sati: 74.53 %
+
+BROJ TERMINA
+Peščenica - 20
+Trešnjevka - 24
+Špansko - 9
+
+SATI PO LOKACIJI:
+Peščenica - 179
+Trešnjevka - 108
+Špansko - 63
+
+PROSJEČNA DOLAZNOST:
+Peščenica - 8.95
+Trešnjevka - 4.5
+Špansko - 7.0
