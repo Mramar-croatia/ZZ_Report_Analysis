@@ -1,0 +1,124 @@
+UKUPNO PRIJAVLJENIH: 280
+UKUPNO SATI: 958
+UKUPNO DJECE: 1444
+
+---
+
+VOLONTERSKI DOLASCI PO LOKACIJI:
+Trešnjevka - 229
+MIOC - 543
+Špansko - 136
+Kralj Tomislav - 50
+
+---
+
+DJECA PO LOKACIJI:
+Trešnjevka - 280
+MIOC - 843
+Špansko - 179
+Kralj Tomislav - 142
+
+---
+
+ODRŽANI TERMINI NA SVAKOJ OD LOKACIJA:
+Trešnjevka - 52
+MIOC - 48
+Špansko - 23
+Kralj Tomislav - 8
+UKUPNO: 131
+
+---
+
+PROSJEČNA DOLAZNOST:
+Trešnjevka - 4.24
+MIOC - 11.21
+Špansko - 5.91
+Kralj Tomislav - 5.87
+UKUPNO: 7.31
+
+---
+
+AKTIVNOST:
+aktivnih - 161
+neaktivnih - 119
+postotak: 42.5%
+
+---
+
+PO ŠKOLI - aktive škole: 9, prijavljene škole: 12 (GTB, IV., VIII.)
+
+Škola  Broj sati
+XV.    550
+PŠVP   143
+GLV    100
+II.    43
+KG     38
+III.   36
+X.     22
+PUG    11
+V.     5
+
+POSTOTAK MIOC SATI: 58.02%
+POSTOTAK MIOC SATI PROŠLE GODINE: 71.40%
+POSTOTAK MIOC SATI PRIJE 2 GODINE: 77.98%
+
+---
+
+BROJ SATI DO DANA 14.4.:
+24./25. - 958
+23./24. - 465
+22./23. - 377
+
+BROJ SATI UKUPNI (na kraju godine):
+24./25. - 958*
+23./24. - 624
+22./23. - 433
+
+---
+
+PRIJAVLJENI VOLONTERI
+24./25. - 280 (bilo je 176 u prvom polugodištu)
+23./24. - 127
+22./23. - 98
+
+---
+
+OMJERI PO LOKACIJI:
+Trešnjevka - 1.22
+MIOC - 1.55
+Špansko - 1.31
+Kralj Tomislav - 2.84
+
+---
+
+BROJ PRIJAVLJENIH VOLONTERA PO RAZREDU:
+1. razred - 45
+2. razred - 77
+3. razred - 125
+4. razred - 33
+
+---
+
+BROJ VOLONTERSKIH SATI PO RAZREDU:
+1. razred - 65
+2. razred - 265
+3. razred - 551
+4. razred - 76
+
+---
+
+MUŠKI/ŽENSKI
+
+- PRIJAVA
+muški: 81
+ženski: 199
+
+- SATI
+muški: 376
+ženski: 572
+
+- OMJERI (SATI/VOLONTER)
+muški: 4.64
+ženski: 2.87
+
+---

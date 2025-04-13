@@ -12,6 +12,7 @@ location_dict = {
     'J': 'Trešnjevka',
     'D': 'Dubrava',
     'Š': 'Špansko',
+    'K': 'Kralj Tomislav'
 }
 
 DATES_ROW = '7'
@@ -181,6 +182,8 @@ def load_location(wb, location_sheet_name: str) -> pd.DataFrame:
     - volunteer_class
     - volunteer_school
     '''
+    
+    print(f'Loading volunteers for {location_sheet_name}...')
     
     # Load the worksheet and the location name
     sheet = wb[location_sheet_name]
